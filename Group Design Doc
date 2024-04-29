@@ -1,11 +1,142 @@
-Main function Algorithm:
-● Display a menu to the user:
-○ Load an image
-■ Utilize a load image function
-○ Display current image
-○ Edit current image
-■ Utilize an edit image function
-○ Exit program
-● Prompt the user for the option they would like
+Main function Algorithm: - (05/04/2024) - Partner 1 and Partner 2 (DJ, Rajat)
+Display a menu to the user:
+Load an image
+Utilize a load image function
+Display current image
+Edit current image
+Utilize an edit image function
+Exit program
+Prompt the user for the option they would like!
 
+
+Walkthrough: 
+If the user selects any of these, we make sure that the ﬁle exists. If the ﬁle does not exist, we quit.
+Otherwise, we get the image. We then either, simply display the image or choose to edit it. If the user
+selects edit, we display new options: crop, brighten, dim, etc. Once the changes are done. We ask if the
+user would like to save the image to a ﬁle, in which it is exported (most likely back to the original ﬁle).
+
+
+
+
+Load Image Function Algorithm: (05/05/2024) - Partner 1 (DJ)
+Close current image file open
+Prompt the user for the new image file’s name to connect to a new stream
+Check the size of the image(utilize a 2D array)
+Counts the amount of rows and columns the file has
+Save as new reference file for future tasks to complete if the user desires so
+Return back to the main menu
+
+loadImage of type VOID
+input: ﬁlePointer, 2D Array
+output: image using rows
+and cols
+return: nothing
+
+
+
+
+
+
+Edit Image Function Algorithm: (05/04/2024) - Partner 1 (DJ)
+Display a menu to the user:
+Crop
+Utilize a cropping function
+Dim
+Utilize a dimming function
+Brighten
+Brightening function
+Rotate 90 degrees Utilize a rotate image function
+Prompt the user for the option they would like
+
+editImage of type VOID
+input: image dimensions, 2D Array
+output: new image
+return: nothing
+
+
+
+
+
+
+Crop Function Algorithm: (05/05/2024) - Partner 2 (Rajat)
+Prompt the user for the range of pixels they would like to crop into a new image
+Perform task with selection of 2D array coordinates
+Utilize the save file function after task is complete
+
+
+cropImage of type VOID
+input: image dimensions, 2D
+Array
+output: image, cropped
+return: nothing
+
+
+
+
+
+
+Dim Function Algorithm: (05/04/2024) - Partner 2 (Rajat)
+Prompt the user for how much dimmer they would like their image to be(numerical value)
+Reduce brightness
+Utilize the save file function after task is complete
+
+dimImage of type VOID
+input: image dimensions, 2D
+Array
+output: image, dimmed
+return: nothing
+
+
+
+
+Brighten Function Algorithm: (05/03/2024) - Partner 2 (Rajat)
+Prompt the user for how much brighter they would like their image to be(numerical value)
+Increase brightness
+Utilize the save file function after task is complete
+
+brightenImage of type VOID
+input: image dimensions, 2D
+Array
+output: image, brightened
+return: nothing
+
+
+
+(BONUS): Rotate Function Algorithm: (05/04/2024) - Partner 1 and Partner 2 (DJ, Rajat)
+Prompt the user how many 90 degree rotations they would like to make to the image for desired orientation
+Move all pixels in the image left/right/up/down based on location
+Direction would move the length or height of the image
+Utilize the save file function after task is complete
+
+
+BONUS: rotateImage of type
+VOID
+input: image dimensions, 2D Array
+output: image, ROTATED
+return: nothing
+
+
+
+
+Save File Function Algorithm: (05/04/2024) - Partner 1 (DJ)
+If an edit to an image file has been made, prompt the user to save to a file
+If yes, prompt the user for a filename to save the changes to
+Save the changes to file
+Return back to the main menu
+
+
+saveImage of type VOID
+input: new image, rows, cols (image dimensions), 2D Array, filePointer
+output: printing image to file
+return: nothing
+
+
+Display Function Algorithm: (05/03/2024) - Partner 1 and Partner 2 (DJ, Rajat)
+File Pointer connects to stream using read mode, reads the 2D array, prints to the screen!
+
+
+Optional: displayFunction of type VOID
+input:rows, cols (image dimensions), 2D Array, filePointer
+output: image
+return: nothing
 
