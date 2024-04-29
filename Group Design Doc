@@ -1,1 +1,11 @@
-Hello World!
+Main function Algorithm:
+● Display a menu to the user:
+○ Load an image
+■ Utilize a load image function
+○ Display current image
+○ Edit current image
+■ Utilize an edit image function
+○ Exit program
+● Prompt the user for the option they would like
+
+
