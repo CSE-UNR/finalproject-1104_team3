@@ -70,7 +70,7 @@ void displayImage(){
 void editImage(){
 	int option;
 	do{
-		//print main menu
+		//print edit menu
 		printf("**EDITING**\n");
 		printf("1: Crop image\n");
 		printf("2: Dim image\n");
@@ -103,7 +103,7 @@ void editImage(){
 		}
 		
 	}while(option != 0);
-	//if the user enters 0, the program returns to the main menu
+	//if the user enters 0, the function returns to the main menu
 	if(option == 0){
 		printf("\nReturning to main menu\n\n");
 	}
