@@ -21,7 +21,7 @@ void rotateImage();
 void saveImage();
 
 int main(){
-	int choice, defaultRow, defaultCol, row, col, picture [row] [col];
+	int choice, defaultRow, defaultCol, row, col, picture[row][col];
 	char fileName[LENGTH + 1];
 	FILE *fptr; 
 	
@@ -89,7 +89,7 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
 
 
 
-	// Since we do not know the amount of rows/cols in the loop, we use a while loop. HOWEVER, we have to make sure that the input is between 0 and 4 and not a newline. If the input is a newline, we check to see if the total rows are = to 0, if they are then we tally up the total columns. Otherwise, we increase the total rows and totalCols is set to 0 right after.
+	
 	
 	// Make sure that we are reading SOMETHING from the input.
     	while (fscanf(loadfp, "%c", &input) == 1) {
@@ -114,6 +114,9 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
 }
 //DJ and Rajat
 void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int image[][cols]){
+
+	int image[100][100] = {0};
+
 	// Opening file
    	loadfp = fopen(string, "r");
    	
@@ -135,7 +138,31 @@ void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int 
 }
 
 void displayImage(int rows, int cols, int image[][cols]){
-
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			switch (image[i][j]) {
+				case 0:
+					printf(" ");
+					break;
+				case 1: 
+					printf(".");
+					break;
+				case 2: 
+					printf("o");
+					break;
+				case 3:
+					printf("O");
+					break;
+				case 4:
+					printf("0");
+					break;
+				default:
+					printf(" ");
+					break;
+			}
+		}
+		printf("\n");
+	}
     
 }
 //DJ
