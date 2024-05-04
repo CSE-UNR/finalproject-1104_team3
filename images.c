@@ -11,7 +11,7 @@
 #define MAXSIZEC 500
 
 void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][boundCols]);
-void displayImage();
+void displayImage(int rows, int cols, int image[][cols]);
 void editImage();
 void cropImage();
 void dimImage();
@@ -63,54 +63,58 @@ int main(){
 
 //DJ
 void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][boundCols]){
+
+
+	// Declaring input here, as we need to make sure the loop only picks out nums.
+	
 	int totalRows = 0, totalCols = 0;
-	
-	printf("What is the name of image file? ");
-	scanf("%s", string);
-	
-	loadfp = fopen(string, "r");
-	if(loadfp == NULL){
-		printf("Can't open file\n");
-	}
-	else{
-		bool column = false;
-		bool row = false;
-		
-		for (int i = 0; column != true; i++) {
-			for (int g = 0; row != true; i++) {
-				fscanf(loadfp, "%d", &image[boundRows][boundCols]);
-				totalCols++;
-				if (image[i][g] == '\n') {
-					row = true;
-				}
-				else if(image[i][g] == '\0'){
-					column = true;
-				}
-				
-			}
-			totalRows++;
-			row = false;
-		}
-		//while loop that checks if bool 2 is true
-		//while loop that checks for if bool is true
-			//fscanf to grab new character
-			//if statement that checks if newest char in line is a newline
-				// if if statement is true set bool to true to stop loop
-			//g++
-		//i++
-		//if statement that checks if first character on next row is null if so set bool 2 to true to stop loop
-		*rows = totalRows;
-		*cols = totalCols;
-		printf("Rows: %d, Columns: %d\n", *rows, *cols);
-	}
-	fclose(loadfp);
-}
+  	char input;
 
+
+	// Name of file
+   	printf("Enter the name of the image file: ");
+   	scanf("%s", string);
+
+	// Opening file
+   	loadfp = fopen(string, "r");
+    
+    	// Return
+  	if (loadfp == NULL) {
+     		printf("Could not open file.\n");
+       		return;
+    	}
+
+
+
+	// Since we do not know the amount of rows/cols in the loop, we use a while loop. HOWEVER, we have to make sure that the input is between 0 and 4 and not a newline. If the input is a newline, we check to see if the total rows are = to 0, if they are then we tally up the total columns. Otherwise, we increase the total rows and totalCols is set to 0 right after.
+	
+	// Make sure that we are reading SOMETHING from the input.
+    	while (fscanf(loadfp, "%c", &input) == 1) {
+        	if (input >= '0' && input <= '4') {
+            	image[totalRows][totalCols++] = input;
+        } else if (input == '\n') {
+ 
+            	if (totalRows == 0) {
+                	*cols = totalCols;
+           	 }
+            	totalRows++;
+        }
+    }
+
+   //Tallying up totalRow and converting to pointer
+    *rows = totalRows;
+    
+
+    printf("Reading: Rows = %d, Cols = %d\n", *rows, *cols);
+
+    fclose(loadfp);
+}
 //DJ and Rajat
-void displayImage(){
 
+void displayImage(int rows, int cols, int image[][cols]){
+
+    
 }
-
 //DJ
 void editImage(){
 	int option;
