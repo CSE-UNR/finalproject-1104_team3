@@ -6,8 +6,10 @@
 
 #include <stdio.h>
 #define LENGTH 100
+#define MAXSIZER 500
+#define MAXSIZEC 500
 
-void loadImage();
+void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int boundaries[][boundCols]);
 void displayImage();
 void editImage();
 void cropImage();
@@ -17,7 +19,8 @@ void rotateImage();
 void saveImage();
 
 int main(){
-	int choice;
+	int choice, defaultRow, defaultCol, row, col, picture [MAXSIZER] [MAXSIZEC];
+	char fileName[LENGTH + 1];
 	FILE *fptr; 
 	
 	do{
@@ -57,8 +60,21 @@ int main(){
 	return 0;
 }
 //DJ
-void loadImage(){
+void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int boundaries[][boundCols]){
+	printf("What is the name of image file?");
+	scanf("%s", string);
 	
+	loadfp = fopen(string, "r");
+	if(loadfp == NULL){
+		printf("Can't open file\n");
+	}
+	else{
+		while(fscanf(loadfp, "%d", &boundaries[boundRows][boundCols])==1){
+			*rows++;
+		}
+		
+	}
+	fclose(loadfp);
 }
 
 //DJ and Rajat
