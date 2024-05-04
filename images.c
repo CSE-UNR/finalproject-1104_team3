@@ -123,13 +123,10 @@ void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int 
        		return;
     	}
     	
-	bool newline = false;
+	
 	for(int i = 0; i<rows; i++){
-		newline = false;
 		for(int g = 0; g<cols; g++){
-			if(image[i][g]=='\n'){
-				newline = true;
-			}
+
 			fscanf(loadfp, "%d", &image[i][g]);
 		}
 	}
