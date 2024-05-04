@@ -35,7 +35,7 @@ int main(){
 		
 		//if the user enters 1, load the image
 		if(choice == 1){
-			printf("\nLoad was selected.\n\n");
+			loadImage(fptr, MAXSIZER, MAXSIZEC, &row, &col, LENGTH, fileName, picture);
 		}
 		
 		//if the user enters 2, display the image
@@ -59,9 +59,12 @@ int main(){
 	
 	return 0;
 }
+
 //DJ
 void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int boundaries[][boundCols]){
-	printf("What is the name of image file?");
+	int totalRows = 0, totalCols = 0;
+	
+	printf("What is the name of image file? ");
 	scanf("%s", string);
 	
 	loadfp = fopen(string, "r");
@@ -69,10 +72,11 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
 		printf("Can't open file\n");
 	}
 	else{
-		while(fscanf(loadfp, "%d", &boundaries[boundRows][boundCols])==1){
-			*rows++;
+		while(fscanf(loadfp, "%d", &boundaries[boundRows][boundCols]) == 1){
+			totalRows++;
 		}
-		
+		*rows = totalRows;
+		printf("Rows: %d, Columns: %d\n", *rows, *cols);
 	}
 	fclose(loadfp);
 }
