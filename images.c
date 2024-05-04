@@ -1,3 +1,9 @@
+/**
+*Authors: DJ DeLucca and Rajat Sharma
+*Date: 5/3/2024
+*Purpose: Create an image processing program
+*/
+
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -13,7 +19,7 @@ void cropImage();
 void dimImage();
 void brightenImage();
 void rotateImage();
-void saveImage();
+void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]);
 
 int main(){
     int choice, row, col;
@@ -43,6 +49,8 @@ int main(){
             	case 3:
             		editImage();
             		break;
+            	case 0:
+            		break;
             	default:
             		printf("Invalid option, please try again:\n\n");
             		break;
@@ -58,7 +66,7 @@ int main(){
     return 0;
 }
 
-//DJ
+
 void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][MAXSIZEC]){
     // Declaring input here, as we need to make sure the loop only picks out nums.
     int totalRows = 0, totalCols = 0;
@@ -97,7 +105,7 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
     fclose(loadfp);
 }
 
-//DJ and Rajat
+
 void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]){
     // Opening file
     loadfp = fopen(string, "r");
@@ -187,3 +195,33 @@ void editImage(){
     }
 }
 
+
+
+
+//DJ
+void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]){
+    char select;
+
+	printf("Save to file?(Y/N): ");
+	scanf(" %c", &select);
+	
+	if(select == 'y' || select == 'Y'){		
+		// Opening file
+		loadfp = fopen(string, "w");
+
+		// Return
+		if (loadfp == NULL) {
+			printf("Could not open file.\n");
+			return;
+		}
+		for (int r = 0; r < rows; r++){
+			for(int c = 0; c < cols; c++){
+				fprintf(loadfp, "%d ", image[r][c]);
+			}
+		}
+		fclose(loadfp);
+	}		
+    else if(select == 'n' || select == 'N'){
+    	printf("Goodbye!");
+    }
+}
