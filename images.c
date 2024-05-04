@@ -5,11 +5,12 @@
 */
 
 #include <stdio.h>
+#include <stdbool.h>
 #define LENGTH 100
 #define MAXSIZER 500
 #define MAXSIZEC 500
 
-void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int boundaries[][boundCols]);
+void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][boundCols]);
 void displayImage();
 void editImage();
 void cropImage();
@@ -61,7 +62,7 @@ int main(){
 }
 
 //DJ
-void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int boundaries[][boundCols]){
+void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][boundCols]){
 	int totalRows = 0, totalCols = 0;
 	
 	printf("What is the name of image file? ");
@@ -72,10 +73,34 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
 		printf("Can't open file\n");
 	}
 	else{
-		while(fscanf(loadfp, "%d", &boundaries[boundRows][boundCols]) == 1){
+		bool column = false;
+		bool row = false;
+		
+		for (int i = 0; column != true; i++) {
+			for (int g = 0; row != true; i++) {
+				fscanf(loadfp, "%d", &image[boundRows][boundCols]);
+				totalCols++;
+				if (image[i][g] == '\n') {
+					row = true;
+				}
+				else if(image[i][g] == '\0'){
+					column = true;
+				}
+				
+			}
 			totalRows++;
+			row = false;
 		}
+		//while loop that checks if bool 2 is true
+		//while loop that checks for if bool is true
+			//fscanf to grab new character
+			//if statement that checks if newest char in line is a newline
+				// if if statement is true set bool to true to stop loop
+			//g++
+		//i++
+		//if statement that checks if first character on next row is null if so set bool 2 to true to stop loop
 		*rows = totalRows;
+		*cols = totalCols;
 		printf("Rows: %d, Columns: %d\n", *rows, *cols);
 	}
 	fclose(loadfp);
