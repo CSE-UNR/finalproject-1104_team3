@@ -10,7 +10,8 @@
 #define MAXSIZER 500
 #define MAXSIZEC 500
 
-void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][boundCols]);
+void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[]);
+void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int image[][cols]);
 void displayImage(int rows, int cols, int image[][cols]);
 void editImage();
 void cropImage();
@@ -20,7 +21,7 @@ void rotateImage();
 void saveImage();
 
 int main(){
-	int choice, defaultRow, defaultCol, row, col, picture [MAXSIZER] [MAXSIZEC];
+	int choice, defaultRow, defaultCol, row, col, picture [row] [col];
 	char fileName[LENGTH + 1];
 	FILE *fptr; 
 	
@@ -36,12 +37,14 @@ int main(){
 		
 		//if the user enters 1, load the image
 		if(choice == 1){
-			loadImage(fptr, MAXSIZER, MAXSIZEC, &row, &col, LENGTH, fileName, picture);
+			loadImage(fptr, MAXSIZER, MAXSIZEC, &row, &col, LENGTH, fileName);
+			saveToArray(fptr, LENGTH, fileName, row, col, picture);
 		}
 		
 		//if the user enters 2, display the image
 		else if(choice == 2){
 			printf("\nDisplay was selected.\n\n");
+			displayImage(row, col, picture);
 		}
 		//if the user enters 3, edit the image
 		else if(choice == 3){
@@ -62,12 +65,12 @@ int main(){
 }
 
 //DJ
-void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][boundCols]){
+void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[]){
 
 
 	// Declaring input here, as we need to make sure the loop only picks out nums.
 	
-	int totalRows = 0, totalCols = 0;
+	int totalRows = 0, totalCols = 0, testArray[boundRows][boundCols];
   	char input;
 
 
@@ -91,7 +94,7 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
 	// Make sure that we are reading SOMETHING from the input.
     	while (fscanf(loadfp, "%c", &input) == 1) {
         	if (input >= '0' && input <= '4') {
-            	image[totalRows][totalCols++] = input;
+            	testArray[totalRows][totalCols++] = input;
         } else if (input == '\n') {
  
             	if (totalRows == 0) {
@@ -110,6 +113,29 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
     fclose(loadfp);
 }
 //DJ and Rajat
+void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int image[][cols]){
+	// Opening file
+   	loadfp = fopen(string, "r");
+   	
+   	// Return
+  	if (loadfp == NULL) {
+     		printf("Could not open file.\n");
+       		return;
+    	}
+    	
+	bool newline = false;
+	for(int i = 0; i<rows; i++){
+		newline = false;
+		for(int g = 0; g<cols; g++){
+			if(image[i][g]=='\n'){
+				newline = true;
+			}
+			fscanf(loadfp, "%d", &image[i][g]);
+		}
+	}
+	printf("Sucess!\n");
+	fclose(loadfp);
+}
 
 void displayImage(int rows, int cols, int image[][cols]){
 
