@@ -13,11 +13,11 @@
 
 void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols, int size, char string[], int image[][MAXSIZEC]);
 void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]);
+void brightenImage(int rows, int cols, int image[][MAXSIZEC]);
 void displayImage(int rows, int cols, int image[][MAXSIZEC]);
-void editImage();
+void editImage(int rows, int cols, int image[][MAXSIZEC]);
 void cropImage();
-void dimImage();
-void brightenImage();
+void dimImage(int rows, int cols, int image[][MAXSIZEC]);
 void rotateImage();
 void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]);
 
@@ -38,6 +38,9 @@ int main(){
         
         
   	switch (choice) {
+		case 0:
+			printf("\nGoodbye!\n\n");
+			break;
         	case 1:
       			loadImage(fptr, MAXSIZER, MAXSIZEC, &row, &col, LENGTH, fileName, picture);
 		        saveToArray(fptr, LENGTH, fileName, row, col, picture);
@@ -47,9 +50,7 @@ int main(){
             		displayImage(row, col, picture);
             		break;
             	case 3:
-            		editImage();
-            		break;
-            	case 0:
+            		editImage(row, col, picture);
             		break;
             	default:
             		printf("Invalid option, please try again:\n\n");
@@ -58,11 +59,6 @@ int main(){
         }
     } while(choice != 0);
     
-    //if the user enters 0, the program ends
-    if(choice == 0) {
-        printf("\nGoodbye!\n\n");
-    }
-
     return 0;
 }
 
@@ -73,7 +69,7 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
     char input;
 
     // Name of file
-    printf("Enter the name of the image file: ");
+    printf("What is the name of the image file? ");
     scanf("%s", string);
 
     // Opening file
@@ -88,20 +84,16 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
     // Make sure that we are reading SOMETHING from the input.
     while (fscanf(loadfp, "%c", &input) == 1) {
         if (input >= '0' && input <= '4') {
-            image[totalRows][totalCols++] = input - '0'; // Convert char to int
+            image[totalRows][totalCols++] = input;
         } else if (input == '\n') {
             if (totalRows == 0) {
                 *cols = totalCols;
             }
             totalRows++;
-            totalCols = 0; // Reset column count for next row
+            totalCols = 0;
         }
     }
-
-    //Tallying up totalRow and converting to pointer
     *rows = totalRows;
-    printf("Reading: Rows = %d, Cols = %d\n", *rows, *cols);
-
     fclose(loadfp);
 }
 
@@ -121,7 +113,7 @@ void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int 
             fscanf(loadfp, "%1d", &image[i][g]);
         }
     }
-    printf("Success!\n");
+    printf("\nImage successfuly saved!\n\n");
     fclose(loadfp);
 }
 
@@ -154,10 +146,9 @@ void displayImage(int rows, int cols, int image[][MAXSIZEC]){
 }
 
 //DJ
-void editImage(){
-    int option;
+void editImage(int rows, int cols, int image[][MAXSIZEC]){
+    int choice;
     do {
-        //print edit menu
         printf("**EDITING**\n");
         printf("1: Crop image\n");
         printf("2: Dim image\n");
@@ -165,36 +156,33 @@ void editImage(){
         printf("4: Rotate image\n");
         printf("0: Exit\n");
         printf("\nChoose from one of the options above: ");
-        scanf("%d", &option);
-
-        //if the user enters 1, crop the image
-        if(option == 1) {
-            printf("\nCrop was selected.\n\n");
+        scanf("%d", &choice);
+        
+        switch (choice) {
+        	case 0:
+        		break;
+        	case 1:
+        		printf("\nCrop was selected.\n\n");
+        		break;
+        	case 2:
+        		printf("\nDim was selected.\n\n");
+        		dimImage(rows, cols, image);
+        		displayImage(rows, cols, image);
+        		break;
+        	case 3:
+        		printf("\nBrighten was selected.\n\n");
+        		brightenImage(rows, cols, image);
+        		displayImage(rows, cols, image);
+        		break;
+        	case 4: 
+        		printf("\nRotate was selected.\n\n");
+        		break;
+        	default:
+        		printf("\nInvalid option, please try again.\n\n");
+        		break;
         }
-
-        //if the user enters 2, dim the image
-        else if(option == 2) {
-            printf("\nDim was selected.\n\n");
-        }
-        //if the user enters 3, brighten the image
-        else if(option == 3) {
-            printf("\nBrighten was selected.\n\n");
-        }
-        //if the user enters 4, rotate the image
-        else if(option == 4) {
-            printf("\nRotate was selected.\n\n");
-        }
-        //invalid case
-        else if(option != 1 && option != 2 && option != 3 && option != 4 && option != 0) {
-            printf("\nInvalid option, please try again.\n\n");
-        }
-    } while(option != 0);
-    //if the user enters 0, the function returns to the main menu
-    if(option == 0) {
-        printf("\nReturning to main menu\n\n");
-    }
+    } while(choice != 0);
 }
-
 
 
 
@@ -224,4 +212,25 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
     else if(select == 'n' || select == 'N'){
     	printf("Goodbye!");
     }
+}
+
+void brightenImage(int rows, int cols, int image[][MAXSIZEC]) {
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			if (image[i][j] < 4) {
+				image[i][j]++;
+			}
+		}
+	}
+}
+
+
+void dimImage(int rows, int cols, int image[][MAXSIZEC]) {
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			if (image[i][j] > 0) {
+				image[i][j]--;
+			}
+		}
+	}
 }
