@@ -234,10 +234,11 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
 			}
 			fprintf(loadfp, "\n");
 		}
+		printf("\nSaved to file.\n\n");
 		fclose(loadfp);
 
 	}		
     else if(select == 'n' || select == 'N'){
-    	printf("Goodbye!");
+    	printf("\nReturning to main menu...\n\n");
     }
 }
