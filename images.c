@@ -16,10 +16,13 @@ void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int 
 void brightenImage(int rows, int cols, int image[][MAXSIZEC]);
 void displayImage(int rows, int cols, int image[][MAXSIZEC]);
 void editImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]);
-void cropImage();
+void cropImage(int rows, int cols, int image[][MAXSIZEC]);
 void dimImage(int rows, int cols, int image[][MAXSIZEC]);
 void rotateImage();
 void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]);
+void editImageSaver(int rows, int cols, int image[][MAXSIZEC]);
+
+
 
 int main(){
     int choice, row, col;
@@ -90,7 +93,6 @@ void loadImage(FILE *loadfp, int boundRows, int boundCols, int* rows, int* cols,
                 *cols = totalCols;
             }
             totalRows++;
-            totalCols = 0;
         }
     }
     *rows = totalRows;
@@ -113,7 +115,7 @@ void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int 
             fscanf(loadfp, "%1d", &image[i][g]);
         }
     }
-    printf("\nImage successfuly saved!\n\n");
+    printf("\nImage successfully saved!\n\n");
     fclose(loadfp);
 }
 
@@ -164,6 +166,8 @@ void editImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
        		break;
        	case 1:
        		printf("\nCrop was selected.\n\n");
+        	displayImage(rows, cols, image);
+       		cropImage(rows, cols, image);
         	break;
         case 2:
         	printf("\nDim was selected.\n\n");
@@ -199,6 +203,8 @@ void brightenImage(int rows, int cols, int image[][MAXSIZEC]) {
 }
 
 
+
+
 void dimImage(int rows, int cols, int image[][MAXSIZEC]) {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
@@ -209,15 +215,71 @@ void dimImage(int rows, int cols, int image[][MAXSIZEC]) {
 	}
 }
 
+void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
+    int leftCol, rightCol, topRow, botRow;
+
+    printf("\nThe image you want to crop is %d x %d.\n", rows, cols);
+    printf("\nThe row and column values start in the upper lefthand corner.\n\n");
+
+    printf("\nWhich column do you want to be the new left side? ");
+    scanf("%d", &leftCol);
+    while (leftCol < 0 || leftCol >= cols) {
+        printf("Invalid column value. Choose a value between 0 and %d: ", cols);
+        scanf("%d", &leftCol);
+    }
+
+    printf("\nWhich column do you want to be the new right side? ");
+    scanf("%d", &rightCol);
+    while (rightCol <= leftCol || rightCol > cols) {
+        printf("Invalid column value. Choose a value between %d and %d: ", leftCol + 1, cols);
+        scanf("%d", &rightCol);
+    }
+
+    printf("\nWhich row do you want to be the new top? ");
+    scanf("%d", &topRow);
+    while (topRow < 0 || topRow >= rows) {
+        printf("Invalid row value. Choose a value between 0 and %d: ", rows);
+        scanf("%d", &topRow);
+    }
+
+    printf("\nWhich row do you want to be the new bottom? ");
+    scanf("%d", &botRow);
+    while (botRow <= topRow || botRow > rows) {
+        printf("Invalid row value. Choose a value between %d and %d: ", topRow + 1, rows);
+        scanf("%d", &botRow);
+    }
+
+
+	leftCol--;
+	topRow--;
+	int croppedImage[MAXSIZER][MAXSIZEC];
+	int croppedRows = botRow - topRow;
+	int croppedCols = rightCol - leftCol;
+    
+
+    for (int i = 0; i < croppedRows; i++) {
+    	for (int j = 0; j < croppedCols; j++) {
+    		croppedImage[i][j] = image[topRow + i][leftCol + j];
+    	
+	}
+    }
+    	displayImage(croppedRows, croppedCols, croppedImage);
+	editImageSaver(croppedRows, croppedCols, croppedImage);
+}
+
+
+
+
+
 
 void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]){
     char select;
 
-	printf("Save to file?(Y/N): ");
+	printf("Would you like to save the file? (y/n) ");
 	scanf(" %c", &select);
 	
 	if(select == 'y' || select == 'Y'){		
-		printf("What is the name of the file you would like to save to? ");
+		printf("What do you want to name the image file? (include the extension) ");
     		scanf("%s", string);
 		
 		// Opening file
@@ -230,11 +292,11 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
 		}
 		for (int r = 0; r < rows; r++){
 			for(int c = 0; c < cols; c++){
-				fprintf(loadfp, "%d ", image[r][c]);
+				fprintf(loadfp, "%d", image[r][c]);
 			}
 			fprintf(loadfp, "\n");
 		}
-		printf("\nSaved to file.\n\n");
+		printf("\nImage successfully saved!\n\n");
 		fclose(loadfp);
 
 	}		
@@ -242,3 +304,31 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
     	printf("\nReturning to main menu...\n\n");
     }
 }
+
+
+void editImageSaver(int rows, int cols, int image[][MAXSIZEC]) {
+	char fileString[LENGTH + 1];
+	printf("Enter the name of the file to save the image (include the extension): ");
+	scanf("%s", fileString);
+	
+	
+	FILE *filePtr = fopen(fileString, "w");
+	
+	if (filePtr == NULL) {
+		printf("Could not open file. Please try again.\n");
+		return;
+	}
+	
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			fprintf(filePtr, "%d", image[i][j]);
+		}
+		fprintf(filePtr, "\n");
+	}
+	printf("\nImage successfully saved!\n\n");
+	fclose(filePtr);
+	
+}
+
+
+
