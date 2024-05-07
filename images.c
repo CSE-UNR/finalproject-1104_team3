@@ -232,28 +232,29 @@ void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
         scanf("%d", &botRow);
     }
 
-
 	leftCol--;
 	topRow--;
 	int croppedImage[MAXSIZER][MAXSIZEC];
 	int croppedRows = botRow - topRow;
 	int croppedCols = rightCol - leftCol;
-    
 
     for (int i = 0; i < croppedRows; i++) {
     	for (int j = 0; j < croppedCols; j++) {
     		croppedImage[i][j] = image[topRow + i][leftCol + j];
     	
-	}
+		}
     }
-    	displayImage(croppedRows, croppedCols, croppedImage);
-		repositionedSaver(croppedRows, croppedCols, croppedImage);
+    
+    displayImage(croppedRows, croppedCols, croppedImage);
+	repositionedSaver(croppedRows, croppedCols, croppedImage);
 }
 
-
+// Brightens or dims the image
 void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
+	// Options based off of user input from the edit menu
 	switch (option) {
 		case 2: 
+			// Dim image by decrementing indivdual vales but not changing if read value is 0
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					if (image[i][j] > 0) {
@@ -263,6 +264,7 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 			}
 			break;
 		case 3:
+			// Brighten image by incrementing indivdual vales but not changing if read value is 4
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					if (image[i][j] < 4) {
@@ -270,11 +272,10 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 					}
 				}
 			}
-
 			break;
 		default:
-        		printf("\nInvalid option, returning to main menu.\n\n");
-        		break;
+        	printf("\nInvalid option, returning to main menu.\n\n");
+        	break;
 	}
 }
 
@@ -282,27 +283,24 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 void rotateImage(int rows, int cols, int image[][MAXSIZEC]) {
 	int rotatingArray[MAXSIZER][MAXSIZEC];
 	
-	
-	
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-            		rotatingArray[j][rows - 1 - i] = image[i][j];
-        	}
-    	}
+            	rotatingArray[j][rows - 1 - i] = image[i][j];
+        }
+    }
 
 	int tempRows = rows;
 	rows = cols;
 	cols = tempRows;
 
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            	image[i][j] = rotatingArray[i][j];
+        }
+    }
 
-    	for (int i = 0; i < rows; i++) {
-        	for (int j = 0; j < cols; j++) {
-            		image[i][j] = rotatingArray[i][j];
-        	}
-    	}
-
-    	displayImage(rows, cols, rotatingArray);
-    	repositionedSaver(rows, cols, rotatingArray);
+    displayImage(rows, cols, rotatingArray);
+    repositionedSaver(rows, cols, rotatingArray);
 }
 
 // Saves the user's photo to a file
