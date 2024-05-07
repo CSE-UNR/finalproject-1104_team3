@@ -193,7 +193,7 @@ void editImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
         default:
         	printf("\nInvalid option, returning to main menu...\n\n");
         	break;
-        }
+     }
    
 }
 
