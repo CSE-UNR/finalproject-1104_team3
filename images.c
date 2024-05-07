@@ -21,231 +21,244 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
 void repositionedSaver(int rows, int cols, int image[][MAXSIZEC]);
 
 int main(){
-    int choice, row, col;
-    char fileName[LENGTH + 1],saveFile[LENGTH + 1];
-    FILE *fptr;
-    int picture[MAXSIZER][MAXSIZEC]; // Declaring the picture array
+	int choice, row, col;
+	char fileName[LENGTH + 1],saveFile[LENGTH + 1];
+	FILE *fptr;
+	int picture[MAXSIZER][MAXSIZEC]; // Declaring the picture array
 	
 	// Printing the menu while choice is not 0
-    do {
-        printf("**ERINSTAGRAM**\n");
-        printf("1: Load image\n");
-        printf("2: Display image\n");
-        printf("3: Edit image\n");
-        printf("0: Exit\n");
-        printf("\nChoose from one of the options above: ");
-        scanf("%d", &choice);
+    	do {
+        	printf("**ERINSTAGRAM**\n");
+        	printf("1: Load image\n");
+        	printf("2: Display image\n");
+        	printf("3: Edit image\n");
+        	printf("0: Exit\n");
+        	printf("\nChoose from one of the options above: ");
+       	 	scanf("%d", &choice);
         
-     	// Options based on choice made from menu including invalid entry
+     		// Options based on choice made from menu including invalid entry
   		switch (choice) {
 			case 0:
 				printf("\nGoodbye!\n\n");
 				break;
-        	case 1:
-      			loadImage(fptr,&row, &col, LENGTH, fileName, picture);
-		        saveToArray(fptr, LENGTH, fileName, row, col, picture);
-        		break;
-        	case 2:
-        	    printf("\nDisplay was selected.\n\n");
-            	displayImage(row, col, picture);
-            	break;
-            	case 3:
-            	editImage(fptr, LENGTH, saveFile, row, col, picture);
-            	break;
-            default:
-            	printf("Invalid option, please try again:\n\n");
-            	break;
+        		case 1:
+      				loadImage(fptr,&row, &col, LENGTH, fileName, picture);
+		        	saveToArray(fptr, LENGTH, fileName, row, col, picture);
+        			break;
+        		case 2:
+        	   		printf("\nDisplay was selected.\n\n");
+            			displayImage(row, col, picture);
+            			break;
+            		case 3:
+            			editImage(fptr, LENGTH, saveFile, row, col, picture);
+            			break;
+            		default:
+            			printf("Invalid option, please try again:\n\n");
+            			break;
         
-        }
-    } while(choice != 0);
+        	}
+    	} while(choice != 0);
     
     return 0;
 }
 
 // Gets the user's file they want to access
 void loadImage(FILE *loadfp, int* rows, int* cols, int size, char string[], int image[][MAXSIZEC]){
-    // Declaring input here, as we need to make sure the loop only picks out nums.
-    int totalRows = 0, totalCols = 0;
-    char input;
+	// Declaring input here, as we need to make sure the loop only picks out nums.
+	int totalRows = 0, totalCols = 0;
+	char input;
 
-    // Prompting the user for the filename
-    printf("What is the name of the image file? ");
-    scanf("%s", string);
+	// Prompting the user for the filename
+    	printf("What is the name of the image file? ");
+    	scanf("%s", string);
 
-    // Opening file
-    loadfp = fopen(string, "r");
+    	// Opening file
+    	loadfp = fopen(string, "r");
 
-    // Check if file can be accessed
-    if (loadfp == NULL) {
-        printf("Could not open file.\n");
-        return;
-    }
+    	// Check if file can be accessed
+    	if (loadfp == NULL) {
+        	printf("Could not open file.\n");
+        	return;
+    	}
 
-    // Make sure that we are reading SOMETHING from the input.
-    while (fscanf(loadfp, "%c", &input) == 1) {
-        if (input >= '0' && input <= '4') {
-            image[totalRows][totalCols++] = input;
-        } else if (input == '\n') {
-            if (totalRows == 0) {
-                *cols = totalCols;
-            }
-            totalRows++;
-        }
-    }
-    *rows = totalRows;
-    fclose(loadfp);
+    	// Make sure that we are reading SOMETHING from the input.
+   	 while (fscanf(loadfp, "%c", &input) == 1) {
+        	if (input >= '0' && input <= '4') {
+            	image[totalRows][totalCols++] = input;
+        	} else if (input == '\n') {
+            	if (totalRows == 0) {
+                	*cols = totalCols;
+            	}
+            	totalRows++;
+        	}
+    	}
+    	*rows = totalRows;
+    	fclose(loadfp);
 }
 
-// Uses the previously saved filename from the loadIMage function to read the file contents and store to a 2D array
+// Uses the previously saved filename from the loadImage function to read the file contents and store to a 2D array
 void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]){
-    // Opening file
-    loadfp = fopen(string, "r");
+	// Opening file
+   	loadfp = fopen(string, "r");
 
-    // Check if file can be accessed
-    if (loadfp == NULL) {
-        printf("Could not open file.\n");
-        return;
-    }
+    	// Check if file can be accessed
+    	if (loadfp == NULL) {
+        	printf("Could not open file.\n");
+        	return;
+    	}
 	
 	// Loop through file and save to the image array, close when complete
-    for(int i = 0; i < rows; i++) {
-        for(int g = 0; g < cols; g++) {
-            fscanf(loadfp, "%1d", &image[i][g]);
-        }
-    }
-    printf("\nImage successfully saved!\n\n");
-    fclose(loadfp);
+    	for(int i = 0; i < rows; i++) {
+        	for(int g = 0; g < cols; g++) {
+            	fscanf(loadfp, "%1d", &image[i][g]);
+        	}
+    	}
+    	printf("\nImage successfully saved!\n\n");
+    	fclose(loadfp);
 }
+
 
 // Displays the user's image using the 2D array from the saveToArray function
 void displayImage(int rows, int cols, int image[][MAXSIZEC]){
-    // Loop through 2D array and print converted values of 0-4 to screen
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            switch (image[i][j]) {
-                case 0:
-                    printf(" ");
-                    break;
-                case 1: 
-                    printf(".");
-                    break;
-                case 2: 
-                    printf("o");
-                    break;
-                case 3:
-                    printf("O");
-                    break;
-                case 4:
-                    printf("0");
-                    break;
-                default:
-                    printf(" ");
-                    break;
-            }
-        }
+   	// Loop through 2D array and print converted values of 0-4 to screen
+    	for (int i = 0; i < rows; i++) {
+        	for (int j = 0; j < cols; j++) {
+            		switch (image[i][j]) {
+			case 0:
+				printf(" ");
+                    		break;
+                	case 1: 
+                    		printf(".");
+                    		break;
+                	case 2: 
+                    		printf("o");
+                    		break;
+               		case 3:
+                    		printf("O");
+                    		break;
+                	case 4:
+                    		printf("0");
+                    		break;
+                	default:
+                    		printf(" ");
+                    		break;
+            		}
+        	}
         printf("\n");
-    }
+    	}
 }
 
 // Displays the edit menu and uses edit/save functions
 void editImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]){
-    int choice;
-    printf("**EDITING**\n");
-    printf("1: Crop image\n");
-    printf("2: Dim image\n");
-    printf("3: Brighten image\n");
-    printf("4: Rotate image\n");
-    printf("0: Exit\n");
-    printf("\nChoose from one of the options above: ");
-    scanf("%d", &choice);
+	int choice;
+    	printf("**EDITING**\n");
+    	printf("1: Crop image\n");
+    	printf("2: Dim image\n");
+    	printf("3: Brighten image\n");
+    	printf("4: Rotate image\n");
+    	printf("0: Exit\n");
+    	printf("\nChoose from one of the options above: ");
+    	scanf("%d", &choice);
     
-    // Options based on choice made from edit menu including invalid entry
-    switch (choice) {
-       	case 0:
+    	// Options based on choice made from edit menu including invalid entry
+    	switch (choice) {
+       		case 0:
        		// Save image
-       		saveImage(loadfp, size, string, rows, cols, image);
-       		break;
-       	case 1:
-       		// Display current status of image and then crop image
-       		printf("\nCrop was selected.\n\n");
-        	displayImage(rows, cols, image);
-       		cropImage(rows, cols, image);
-        	break;
-        case 2:
-        	// Dim image, display result and save results
-        	printf("\nDim was selected.\n\n");
+       			saveImage(loadfp, size, string, rows, cols, image);
+       			break;
+       		case 1:
+       			// Display current status of image and then crop image
+       			printf("\nCrop was selected.\n\n");
+        		displayImage(rows, cols, image);
+       			cropImage(rows, cols, image);
+        		break;
+        	case 2:
+        		// Dim image, display result and save results
+        		printf("\nDim was selected.\n\n");
 			brightOrDim(rows, cols, image, choice);
-        	displayImage(rows, cols, image);
-        	saveImage(loadfp, size, string, rows, cols, image);
-        	break;
-        case 3:
-        	// Brighten image, display result and save results
-        	printf("\nBrighten was selected.\n\n");
-		brightOrDim(rows, cols, image, choice);
-        	displayImage(rows, cols, image);
-        	saveImage(loadfp, size, string, rows, cols, image);
-        	break;
-        case 4: 
-        	// Perform a rotation on the image
-        	printf("\nRotate was selected.\n\n");
-        	rotateImage(rows, cols, image);
-        	break;
-        default:
-        	printf("\nInvalid option, returning to main menu...\n\n");
-        	break;
-     }
+        		displayImage(rows, cols, image);
+        		saveImage(loadfp, size, string, rows, cols, image);
+        		break;
+        	case 3:
+        		// Brighten image, display result and save results
+        		printf("\nBrighten was selected.\n\n");
+			brightOrDim(rows, cols, image, choice);
+        		displayImage(rows, cols, image);
+        		saveImage(loadfp, size, string, rows, cols, image);
+        		break;
+        	case 4: 
+        		// Perform a rotation on the image
+        		printf("\nRotate was selected.\n\n");
+        		rotateImage(rows, cols, image);
+        		break;
+        	default:
+        		printf("\nInvalid option, returning to main menu...\n\n");
+        		break;
+     	}
    
 }
 
 // Crops the image from specifed coordinates in the image's 2D array
 void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
-    int leftCol, rightCol, topRow, botRow;
+	int leftCol, rightCol, topRow, botRow;
+	
+	
+	// Indicates image size
+	printf("\nThe image you want to crop is %d x %d.\n", rows, cols);
+    	printf("\nThe row and column values start in the upper lefthand corner.\n\n");
 
-    printf("\nThe image you want to crop is %d x %d.\n", rows, cols);
-    printf("\nThe row and column values start in the upper lefthand corner.\n\n");
 
-    printf("\nWhich column do you want to be the new left side? ");
-    scanf("%d", &leftCol);
-    while (leftCol < 0 || leftCol >= cols) {
-        printf("Invalid column value. Choose a value between 0 and %d: ", cols);
-        scanf("%d", &leftCol);
-    }
+	// The new column on the left side must be between 0 and cols.
+    	printf("\nWhich column do you want to be the new left side? ");
+    	scanf("%d", &leftCol);
+    	while (leftCol < 0 || leftCol >= cols) {
+        	printf("Invalid column value. Choose a value between 0 and %d: ", cols);
+        	scanf("%d", &leftCol);
+    	}
 
-    printf("\nWhich column do you want to be the new right side? ");
-    scanf("%d", &rightCol);
-    while (rightCol <= leftCol || rightCol > cols) {
-        printf("Invalid column value. Choose a value between %d and %d: ", leftCol + 1, cols);
-        scanf("%d", &rightCol);
-    }
+	// The new column on the right side must be greater than the left column while being less than cols.
+    	printf("\nWhich column do you want to be the new right side? ");
+    	scanf("%d", &rightCol);
+    	while (rightCol <= leftCol || rightCol > cols) {
+        	printf("Invalid column value. Choose a value between %d and %d: ", leftCol + 1, cols);
+        	scanf("%d", &rightCol);
+    	}
 
-    printf("\nWhich row do you want to be the new top? ");
-    scanf("%d", &topRow);
-    while (topRow < 0 || topRow >= rows) {
-        printf("Invalid row value. Choose a value between 0 and %d: ", rows);
-        scanf("%d", &topRow);
-    }
+	// The new top row must be between 0 and rows.
+    	printf("\nWhich row do you want to be the new top? ");
+    	scanf("%d", &topRow);
+    	while (topRow < 0 || topRow >= rows) {
+        	printf("Invalid row value. Choose a value between 0 and %d: ", rows);
+        	scanf("%d", &topRow);
+    	}
 
-    printf("\nWhich row do you want to be the new bottom? ");
-    scanf("%d", &botRow);
-    while (botRow <= topRow || botRow > rows) {
-        printf("Invalid row value. Choose a value between %d and %d: ", topRow + 1, rows);
-        scanf("%d", &botRow);
-    }
 
+	// The new row on the bottom must be greater than the top row while being less than rows.
+    	printf("\nWhich row do you want to be the new bottom? ");
+    	scanf("%d", &botRow);
+   	while (botRow <= topRow || botRow > rows) {
+        	printf("Invalid row value. Choose a value between %d and %d: ", topRow + 1, rows);
+        	scanf("%d", &botRow);
+    	}
+
+	// Adjustments for array starting at (0,0)
 	leftCol--;
 	topRow--;
+	// Temporary Array to crop using new inputs
 	int croppedImage[MAXSIZER][MAXSIZEC];
 	int croppedRows = botRow - topRow;
 	int croppedCols = rightCol - leftCol;
 
-    for (int i = 0; i < croppedRows; i++) {
-    	for (int j = 0; j < croppedCols; j++) {
-    		croppedImage[i][j] = image[topRow + i][leftCol + j];
+	// Adjusting starting point by using topRow and leftCol
+    	for (int i = 0; i < croppedRows; i++) {
+    		for (int j = 0; j < croppedCols; j++) {
+    			croppedImage[i][j] = image[topRow + i][leftCol + j];
     	
 		}
-    }
-    
-    displayImage(croppedRows, croppedCols, croppedImage);
+    	}
+    	
+    	// Prompt to display and save the repositioned image
+	displayImage(croppedRows, croppedCols, croppedImage);
 	repositionedSaver(croppedRows, croppedCols, croppedImage);
 }
 
@@ -283,29 +296,34 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 void rotateImage(int rows, int cols, int image[][MAXSIZEC]) {
 	int rotatingArray[MAXSIZER][MAXSIZEC];
 	
+	
+	// Stored into new rotatingArray using a "formula" to replace [i][j] with [j][formula - i]
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
             	rotatingArray[j][rows - 1 - i] = image[i][j];
-        }
-    }
-
+        	}
+   	}
+   	
+	// Declaring a temporary rows variable to convert rows to cols, and cols to rows
 	int tempRows = rows;
 	rows = cols;
 	cols = tempRows;
+	
+	// Converting rotatingArray back to the original image array
+    	for (int i = 0; i < rows; i++) {
+        	for (int j = 0; j < cols; j++) {
+            		image[i][j] = rotatingArray[i][j];
+        	}
+    	}
 
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            	image[i][j] = rotatingArray[i][j];
-        }
-    }
-
-    displayImage(rows, cols, rotatingArray);
-    repositionedSaver(rows, cols, rotatingArray);
+	// Sending in rows(cols), cols(rows), and our new rotatedArray by first displaying then prompting to save repositioned image
+   	displayImage(rows, cols, rotatingArray);
+    	repositionedSaver(rows, cols, rotatingArray);
 }
 
 // Saves the user's photo to a file
 void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int image[][MAXSIZEC]){
-    char select;
+	char select;
     
 	// Prompt the user to save their changes to a file
 	printf("Would you like to save the file? (y/n) ");
@@ -317,9 +335,9 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
 		case 'y':	
 			// Prompting the user for a filename	
 			printf("What do you want to name the image file? (include the extension) ");
-    		scanf("%s", string);
+    			scanf("%s", string);
     		
-    		// Opening file
+    			// Opening file
 			loadfp = fopen(string, "w");
 
 			// Check if file can be accessed
