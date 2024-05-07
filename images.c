@@ -197,7 +197,7 @@ void editImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
    
 }
 
-
+// Crops the image from specifed coordinates in the image's 2D array
 void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
     int leftCol, rightCol, topRow, botRow;
 
@@ -279,7 +279,7 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 	}
 }
 
-
+// Rotates the image clockwise 90 degrees
 void rotateImage(int rows, int cols, int image[][MAXSIZEC]) {
 	int rotatingArray[MAXSIZER][MAXSIZEC];
 	
