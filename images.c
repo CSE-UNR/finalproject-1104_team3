@@ -117,7 +117,6 @@ void saveToArray(FILE *loadfp, int size, char string[], int rows, int cols, int 
     	fclose(loadfp);
 }
 
-
 // Displays the user's image using the 2D array from the saveToArray function
 void displayImage(int rows, int cols, int image[][MAXSIZEC]){
    	// Loop through 2D array and print converted values of 0-4 to screen
@@ -199,16 +198,14 @@ void editImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
 }
 
 // Crops the image from specifed coordinates in the image's 2D array
-void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
+void cropImage(int rows, int cols, int image[][MAXSIZEC]){
 	int leftCol, rightCol, topRow, botRow;
-	
 	
 	// Indicates image size
 	printf("\nThe image you want to crop is %d x %d.\n", rows, cols);
     	printf("\nThe row and column values start in the upper lefthand corner.\n\n");
 
-
-	// The new column on the left side must be between 0 and cols.
+	// The new column on the left side must be between 0 and cols
     	printf("\nWhich column do you want to be the new left side? ");
     	scanf("%d", &leftCol);
     	while (leftCol < 0 || leftCol >= cols) {
@@ -216,7 +213,7 @@ void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
         	scanf("%d", &leftCol);
     	}
 
-	// The new column on the right side must be greater than the left column while being less than cols.
+	// The new column on the right side must be greater than the left column while being less than cols
     	printf("\nWhich column do you want to be the new right side? ");
     	scanf("%d", &rightCol);
     	while (rightCol <= leftCol || rightCol > cols) {
@@ -224,7 +221,7 @@ void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
         	scanf("%d", &rightCol);
     	}
 
-	// The new top row must be between 0 and rows.
+	// The new top row must be between 0 and rows
     	printf("\nWhich row do you want to be the new top? ");
     	scanf("%d", &topRow);
     	while (topRow < 0 || topRow >= rows) {
@@ -232,8 +229,7 @@ void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
         	scanf("%d", &topRow);
     	}
 
-
-	// The new row on the bottom must be greater than the top row while being less than rows.
+	// The new row on the bottom must be greater than the top row while being less than rows
     	printf("\nWhich row do you want to be the new bottom? ");
     	scanf("%d", &botRow);
    	while (botRow <= topRow || botRow > rows) {
@@ -257,13 +253,13 @@ void cropImage(int rows, int cols, int image[][MAXSIZEC]) {
 		}
     	}
     	
-    	// Prompt to display and save the repositioned image
+    	// Display and prompt to save the repositioned image
 	displayImage(croppedRows, croppedCols, croppedImage);
 	repositionedSaver(croppedRows, croppedCols, croppedImage);
 }
 
 // Brightens or dims the image
-void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
+void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option){
 	// Options based off of user input from the edit menu
 	switch (option) {
 		case 2: 
@@ -271,7 +267,7 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					if (image[i][j] > 0) {
-					image[i][j]--;
+						image[i][j]--;
 					}
 				}
 			}
@@ -293,14 +289,13 @@ void brightOrDim(int rows, int cols, int image[][MAXSIZEC], int option) {
 }
 
 // Rotates the image clockwise 90 degrees
-void rotateImage(int rows, int cols, int image[][MAXSIZEC]) {
+void rotateImage(int rows, int cols, int image[][MAXSIZEC]){
 	int rotatingArray[MAXSIZER][MAXSIZEC];
-	
 	
 	// Stored into new rotatingArray using a "formula" to replace [i][j] with [j][formula - i]
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-            	rotatingArray[j][rows - 1 - i] = image[i][j];
+            		rotatingArray[j][rows - 1 - i] = image[i][j];
         	}
    	}
    	
@@ -366,7 +361,7 @@ void saveImage(FILE *loadfp, int size, char string[], int rows, int cols, int im
 }
 
 // Saves the user's photo to a file after crop or rotate has been completed
-void repositionedSaver(int rows, int cols, int image[][MAXSIZEC]) {
+void repositionedSaver(int rows, int cols, int image[][MAXSIZEC]){
 	char fileString[LENGTH + 1];
 	char choice;
 	
